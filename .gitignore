@@ -2,3 +2,6 @@
 
 /generated/prisma
 .env
+@spec.md
+roles.md
+TODO.md

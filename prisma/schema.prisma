@@ -13,4 +13,14 @@ model User {
   name      String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  accounts  Account[] 
+}
+
+model Account {
+  id          Int      @id @default(autoincrement())
+  accountName String   
+  balance     Float    @default(0)
+  currency    String   @default("USD")
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id])
 }

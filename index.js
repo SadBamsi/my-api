@@ -1,15 +1,8 @@
 require("dotenv").config();
 const express = require("express");
-const { PrismaClient } = require("@prisma/client");
-const { PrismaPg } = require("@prisma/adapter-pg");
 const bcrypt = require("bcryptjs");
 const cors = require("cors");
-
-const adapter = new PrismaPg({
-  connectionString: process.env.DATABASE_URL,
-});
-
-const prisma = new PrismaClient({ adapter });
+const prisma = require("./prisma/client").default;
 
 const app = express();
 
@@ -66,6 +59,15 @@ app.post("/api/login", async (req, res) => {
     res.status(500).json({ message: "Не удалось войти" });
   }
 });
+
+const {
+  createAccount,
+  getAccountsByUser,
+  deleteAccount,
+} = require("./account/account.controller");
+app.post("/api/accounts", createAccount);
+app.get("/api/accounts/:userId", getAccountsByUser);
+app.delete("/api/accounts/:accountId", deleteAccount);
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
